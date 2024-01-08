@@ -13,6 +13,23 @@ void get_URL(const string &host, const string &path) {
     // the computer whose name is in the "host" string,
     // then request the URL path given in the "path" string.
 
+    TCPSocket tcpsock;
+    tcpsock.connect(Address(host, "http"));
+    string endl = "\r\n";
+    string s1 = "GET ";
+    string s2 = " HTTP/1.1";
+    tcpsock.write(s1 + path + s2 + endl);
+    string s3 = "Host: ";
+    tcpsock.write(s3 + host + endl);
+    string s4 = "Connection: close";
+    tcpsock.write(s4 + endl);
+    tcpsock.write(endl);
+
+    while(!tcpsock.eof()){
+        cout >> tcpsock.read();
+    }
+
+
     // Then you'll need to print out everything the server sends back,
     // (not just one call to read() -- everything) until you reach
     // the "eof" (end of file).
